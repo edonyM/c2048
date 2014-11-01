@@ -1,3 +1,8 @@
+totalline=1143
+trials=(line-2)/7=1142/7=163
+when I try about 160 times, it runs error for there was no change when I type [hjkl]
+I doubt that was about memory leakage or I could not understand the rule about this game engine well.So I will try review the code later.
+===========================================================================
 [edony@edony c2048]$ ./2048 --human
 0 4 16
 0 0 4 0 
@@ -1142,8 +1147,3 @@ Score: 1923
 
 [hjkl] 
 
-==========================================================================
-line:1143
-trials=(line-2)/7=1142/7=163
-when I try about 160 times, it runs error for there was no change when I type [hjkl]
-I doubt that was about memory leakage or I could not understand the rule about this game engine well.So I will try review the code later.
