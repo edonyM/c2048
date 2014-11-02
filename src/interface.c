@@ -8,6 +8,7 @@
 #include "board.h"
 #include "ai.h"
 #include "util.h"
+#include <string.h>
 
 static char move_to_char[4] = {'u', 'r', 'd', 'l', };
 
