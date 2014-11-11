@@ -167,9 +167,11 @@ void board_move(board_t *board, int move)
 
 void board_print(board_t board) 
 {
-    for (int y = 0; y < COLSIZE; ++y) {
-        for (int x = 0; x < COLSIZE; ++x) {
-            printf("%d ", board.cells[y * COLSIZE + x]);
+    for (int y = 0; y < COLSIZE; ++y) 
+    {
+        for (int x = 0; x < COLSIZE; ++x) 
+        {
+            printf("%4d ", board.cells[y * COLSIZE + x]);
         }
         printf("\n");
     }

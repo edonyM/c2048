@@ -6,3 +6,5 @@ After read and test the code, finde some problems that should be optimized.
     FIX: change the collision handle function according to the principle
 <3>When the game should stop?
     FIX: add some condition to break the loops
+<4>When come across some error inputs, the software will have some problems, for instance there being no any change after strocking the key
+    FIX: debug this bug and which function leads to the problem
