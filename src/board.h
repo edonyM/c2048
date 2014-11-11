@@ -9,7 +9,8 @@
 #define MOVE_DOWN 2
 #define MOVE_LEFT 3
 
-typedef struct board_t {
+typedef struct board_t 
+{
     /* stores the numbers on the board. 0 means empty. */
     int cells[SIZE];
     int score;

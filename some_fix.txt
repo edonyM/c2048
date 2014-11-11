@@ -1,0 +1,6 @@
+#2014/11/11
+After read and test the code, finde some problems that should be optimized.
+<1>The printed numbers of each line must aligned for the better interface.
+    FIX: set the print format so that each number occupies the same output space.
+<2>After the collision was handled, all the movable cell should move along the move direction.
+    FIX: change the collision handle function according to the principle

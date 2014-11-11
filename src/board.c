@@ -11,7 +11,8 @@
 static void fill_random_cell(board_t*);
 static int get_score(int);
 
-static int score_map[] = {
+static int score_map[] = 
+{
         2, //     2
         5, //     4
        10, //     8
@@ -28,8 +29,10 @@ static int score_map[] = {
     32500, // 16384
 };
 
-static int get_score(int number) {
-    if (number > 16384) {
+static int get_score(int number) 
+{
+    if (number > 16384) 
+    {
         return number * 2;
     }
 
@@ -38,23 +41,30 @@ static int get_score(int number) {
     return score_map[score_i - 1];
 }
 
-static void fill_random_cell(board_t *board) {
+static void fill_random_cell(board_t *board) 
+{
     /* we don't want randomness while doing testcases. */
-    if (test_status == DOING_TESTS) {
+    if (test_status == DOING_TESTS) 
+    {
         return;
     }
 
     /* bitmap of all the unoccupied squares */
     int bitmap_flipped = ~board->occupied_cells & ((1 << SIZE) - 1);
-    if (bitmap_flipped) {
+    if (bitmap_flipped) 
+    {
+        //numbers of unoccupied cells
         int num_unoccupied = PopCnt(bitmap_flipped);
 
         /* remove a bit from the bottom of `bitmap_flipped`, `rand() % num_unoccupied` times. */
-        for (int r = rand() % num_unoccupied; r; --r) {
+        //this is to get the cell that is not occupied to used in the following
+        for (int r = rand() % num_unoccupied; r; --r) 
+        {
             bitmap_flipped &= bitmap_flipped - 1;
         }
 
         /* Get the index of the lowermost bit, which should now be a random index of the unoccupied squares. */
+        //auto occupy the cell which 2 or 4 and the probability of 2 is larger than 4's
         int rand_i = LSB(bitmap_flipped);
         int rand_val = (rand() % 9) ? 2 : 4;
 
@@ -64,8 +74,11 @@ static void fill_random_cell(board_t *board) {
     }
 }
 
-board_t board_init() {
+board_t board_init() 
+{
     board_t board;
+    //func memset(char*a,char b,int n) included in the <string.h>or<memory.h>
+    //which means set the n memebers of the a as character b
     memset(&board, 0, sizeof(board_t));
     for (int i = 0; i < 2; ++i)
         fill_random_cell(&board);
@@ -81,11 +94,15 @@ void board_setup_bitfields(board_t *board) {
     }
 }
 
-void board_move(board_t *board, int move) {
+void board_move(board_t *board, int move) 
+{
     int reversed = move == MOVE_UP || move == MOVE_LEFT;
 
     /* `bitmap` represents all the numbers that we haven't moved yet */
-    for (int bitmap = board->occupied_cells; bitmap;) {
+    for (int bitmap = board->occupied_cells; bitmap;) 
+    {
+        //if the key strock is UP or LEFT than get the lowest bit that is not occupied
+        //else get the highest bit
         int i = reversed ? MSB(bitmap) : LSB(bitmap);
         int val = board->cells[i];
 
@@ -94,33 +111,49 @@ void board_move(board_t *board, int move) {
         /* did this number collide with another number? */
         int collision_bitmap = precalc_directions[i][move] & board->occupied_cells;
 
-        if (!collision_bitmap) {
+        if (!collision_bitmap) 
+        {
             /* if not, put the number on the most distant square (if it's not there already) */
             int last_i = precalc_directions_last[i][move];
-            if (last_i >= 0) {
+            if (last_i >= 0) 
+            {
+                //set the cell bit into 0 and the to move bit into 1
                 board->occupied_cells ^= (1 << i) | (1 << last_i);
                 board->cells[i] = 0;
                 board->cells[last_i] = val;
             }
         }
-        else {
+        else //collide happens
+        {
             /* we have a collision; find out the index and value */
             int other_i = reversed ? MSB(collision_bitmap) : LSB(collision_bitmap);
             int other_val = board->cells[other_i];
 
-            if (other_val == val) {
+            if (other_val == val) 
+            {
                 /* score! */
+                //clear the moved bit
                 board->occupied_cells ^= 1 << i;
+
                 board->cells[i] = 0;
                 board->cells[other_i] = val * 2;
                 board->score += get_score(val);
+
                 /* remove the number from `bitmap` as it's been merged, and so it shouldn't move */
+                //? don't understand why "&",because just change the collide bit
                 bitmap &= ~(1 << other_i);
+                
+                //after handle the collision, the collision cell should move into the first
+                //unoccupied cell along the move direction
+                //I should fix this function
+
             }
-            else {
+            else 
+            {
                 /* two different numbers; move to its neighbor square if we're not there already */
                 int first_i = precalc_directions_first[other_i][(move + 2) % 4]; // `(move + 2) % 4` flips the direction.
-                if (first_i >= 0 && first_i != i) {
+                if (first_i >= 0 && first_i != i) 
+                {
                     board->occupied_cells ^= (1 << i) | (1 << first_i);
                     board->cells[i] = 0;
                     board->cells[first_i] = val;
@@ -132,7 +165,8 @@ void board_move(board_t *board, int move) {
     fill_random_cell(board);
 }
 
-void board_print(board_t board) {
+void board_print(board_t board) 
+{
     for (int y = 0; y < COLSIZE; ++y) {
         for (int x = 0; x < COLSIZE; ++x) {
             printf("%d ", board.cells[y * COLSIZE + x]);
