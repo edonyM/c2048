@@ -71,6 +71,11 @@ int main(int argc, char **argv)
                 {
                     board_move(&board, MOVE_LEFT);
                 }
+                else
+                {
+                    puts("wrong key strock!");
+                    return 1;
+                }
             }
         }
         else if (0 == strcmp(argv[1], "--test")) 

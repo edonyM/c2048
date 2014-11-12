@@ -122,6 +122,22 @@ void board_move(board_t *board, int move)
                 board->cells[i] = 0;
                 board->cells[last_i] = val;
             }
+            //check if there are other cells to move along the direction
+            if(move == MOVE_UP)
+            {
+                int last_cell_i = last_i;
+                int row = i / 4;
+                int colum = i % 4;
+                for(int counter=row + 1; couter < 4; couter++)
+                {
+                    //check if there is a cell
+                    if(board->occupied_cells & (1 << (couter * 4 + colum)))
+                    {
+                        bitmap ^= ((1 << (couter * 4 + colum));
+                        int last_i_row = last_cell_i / 4;
+                        int last_i_colum = last_cell_i % 4;
+                        last_i_row++;
+                        board->occupied_cells ^= (1 << (counter * 4 + colum)) | (1 << (last_i_row * 4 + last_i_colum))
         }
         else //collide happens
         {
@@ -135,14 +151,15 @@ void board_move(board_t *board, int move)
                 //clear the moved bit
                 board->occupied_cells ^= 1 << i;
 
+                /*--Step 1 handle the collision and plus them--*/
                 board->cells[i] = 0;
                 board->cells[other_i] = val * 2;
                 board->score += get_score(val);
-
                 /* remove the number from `bitmap` as it's been merged, and so it shouldn't move */
                 //? don't understand why "&",because just change the collide bit
                 bitmap &= ~(1 << other_i);
                 
+                /*--Step 2 move along the direction again--*/
                 //after handle the collision, the collision cell should move into the first
                 //unoccupied cell along the move direction
                 //I should fix this function
