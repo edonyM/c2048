@@ -85,10 +85,13 @@ board_t board_init()
     return board;
 }
 
-void board_setup_bitfields(board_t *board) {
+void board_setup_bitfields(board_t *board) 
+{
     board->occupied_cells = 0;
-    for (int i = 0; i < SIZE; ++i) {
-        if (board->cells[i]) {
+    for (int i = 0; i < SIZE; ++i) 
+    {
+        if (board->cells[i]) 
+        {
             board->occupied_cells |= (1 << i);
         }
     }
@@ -126,18 +129,30 @@ void board_move(board_t *board, int move)
             if(move == MOVE_UP)
             {
                 int last_cell_i = last_i;
-                int row = i / 4;
-                int colum = i % 4;
-                for(int counter=row + 1; couter < 4; couter++)
+                int move_to_row = last_cell_i / 4;
+                int move_to_colum = last_cell_i % 4;
+                for(int counter=move_to_row + 1; counter < 4; counter++)
                 {
-                    //check if there is a cell
-                    if(board->occupied_cells & (1 << (couter * 4 + colum)))
+                    //value of to moved cell
+                    int val = board->cells[counter * 4 + move_to_colum];
+
+                    //the location of moving to 
+                    move_to_row++;
+                    last_cell_i = (move_to_row * 4) + move_to_colum;
+
+                    //check if there is a cell, true then move the cell to the location
+                    if(board->occupied_cells & (1 << (counter * 4 + move_to_colum)))
                     {
-                        bitmap ^= ((1 << (couter * 4 + colum));
-                        int last_i_row = last_cell_i / 4;
-                        int last_i_colum = last_cell_i % 4;
-                        last_i_row++;
-                        board->occupied_cells ^= (1 << (counter * 4 + colum)) | (1 << (last_i_row * 4 + last_i_colum))
+                        //update the bitmap
+                        bitmap ^= (1 << last_cell_i);
+                        //update the occupied_cells
+                        board->occupied_cells ^= (1 << (counter * 4 + move_to_colum)) | (1 << last_cell_i);
+                        //update the value of the both cells
+                        board->cells[counter * 4 + move_to_colum] = 0;
+                        board->cells[last_cell_i] = val;
+                    }
+                 }
+            }
         }
         else //collide happens
         {
