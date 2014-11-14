@@ -152,8 +152,37 @@ void board_move(board_t *board, int move)
                         board->cells[last_cell_i] = val;
                     }
                  }
-            }
-        }
+            }//end of MOVE_UP
+
+            //direction of MOVE_DOWN
+            if(move == MOVE_DOWN)
+            {
+                int last_cell_i = last_i;
+                int move_to_row = last_i / 4;
+                int move_to_colum = last_i % 4;
+                for(int counter=move_to_row - 1; counter>=0; counter--)
+                {
+                    //value of to moved cell
+                    int val = board->cells[counter * 4 + move_to_colum];
+
+                    //the location of moving to 
+                    move_to_row--;
+                    last_cell_i = (move_to_row * 4) + move_to_colum;
+
+                    //check if there are any cells, true then move the cell to the location
+                    if(board->occupied_cells & (1 << (counter * 4 + move_to_colum)))
+                    {
+                        //update the bitmap
+                        bitmap ^=  (1 << last_cell_i);
+                        //update the occupied_cells
+                        board->ocuppied_cells ^= (1 << (counter * 4 + move_to_colum)) | (1 << last_cell_i);
+                        //update the value of the both cells
+                        board->cells[counter * 4 + move_to_colum] = 0;
+                        board->cells[last_cell_i] = val;
+                    }
+                }
+            }//end of MOVE_DOWN
+        }//end of none-collision
         else //collide happens
         {
             /* we have a collision; find out the index and value */
@@ -191,8 +220,8 @@ void board_move(board_t *board, int move)
                     board->cells[first_i] = val;
                 }
             }
-        }
-    }
+        }//end of collsion handles
+    }//end of bitmap loops
 
     fill_random_cell(board);
 }
@@ -210,3 +239,27 @@ void board_print(board_t board)
     printf("Score: %d\n", board.score);
     printf("\n");
 }
+void board_print_occupied(board_t * board)
+{
+    int tmp = board->occupied_cells;
+    for(int i = 1;i<17;i++)
+    {
+        printf("%4d ",tmp % 2);
+        if(i % 4 == 0)printf("\n");
+        tmp = tmp / 2;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

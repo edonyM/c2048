@@ -22,5 +22,6 @@ board_t board_init();
 void board_print(board_t);
 void board_move(board_t*, int);
 void board_setup_bitfields(board_t*);
+void board_print_occupied(board_t*);
 
 #endif
