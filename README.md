@@ -17,3 +17,7 @@ Shell arguments:
 If you run it with no arguments, it will be able to talk to [4096](https://github.com/matslindh/4096), a 2048 bot interface made by Mats Lindh:
 
     ../4096/4096/interface.py 0 ./2048
+
+
+====   
+this small game engine is fast for its bit-manipunation
