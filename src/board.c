@@ -193,7 +193,7 @@ void board_move(board_t *board, int move)
 
                 //direction of MOVE_RIGHT
                 if(move == MOVE_RIGHT)
-                {
+                 {
                     puts("MOVE_RIGHT all the other cells\n");
                     int last_cell_i = last_i;
                     int move_to_row = last_cell_i / 4;
@@ -241,20 +241,48 @@ void board_move(board_t *board, int move)
                 board->cells[other_i] = val * 2;
                 board->score += get_score(val);
                 /* remove the number from `bitmap` as it's been merged, and so it shouldn't move */
-                //? don't understand why "&",because just change the collide bit
+                //just change the collide bit
                 bitmap &= ~(1 << other_i);
                 
                 /*--Step 2 move along the direction again--*/
                 //after handle the collision, the collision cell should move into the first
                 //unoccupied cell along the move direction
-                //I should fix this function
-
+                if(move == MOVE_UP)
+                {
+                    //move all cells after the collision cell
+                    int move_row = other_i / 4;
+                    int move_colum = other_i % 4;
+                    printf("%d, %d\n",val,other_i);
+                    //move the cell along the direction
+                    for(int counter = move_row - 1; counter >= 0; counter--)
+                    {
+                        if((board->occupied_cells & (1 << (counter * 4 + move_colum))) == 0)
+                        {
+                            puts("update the cell");
+                            //update the occupied_cells of move to and move from
+                            board->occupied_cells ^= 1 << ((counter + 1) * 4 + move_colum);
+                            board->occupied_cells ^= 1 << (counter * 4 + move_colum);
+                            //update the cells of move to and move from
+                            board->cells[counter * 4 + move_colum] = 2 * val;
+                            board->cells[(counter + 1) * 4 + move_colum] = 0;
+                            //update the bitmap of move to and move from
+                            bitmap &= ~(1 << ((counter + 1) * 4 + move_colum));
+                            bitmap ^= (1 << (counter * 4 + move_colum));
+                        }
+                        else 
+                        {
+                            printf("break");
+                            break;
+                        }
+                    }
+                }
             }
             else 
             {
                 puts("collision and can not merge\n");
                 /* two different numbers; move to its neighbor square if we're not there already */
-                int first_i = precalc_directions_first[other_i][(move + 2) % 4]; // `(move + 2) % 4` flips the direction.
+                // `(move + 2) % 4` flips the direction.
+                int first_i = precalc_directions_first[other_i][(move + 2) % 4]; 
                 if (first_i >= 0 && first_i != i) 
                 {
                     board->occupied_cells ^= (1 << i) | (1 << first_i);
