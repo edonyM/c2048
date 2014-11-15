@@ -190,6 +190,37 @@ void board_move(board_t *board, int move)
                         }
                     }
                 }//end of MOVE_DOWN
+
+                //direction of MOVE_RIGHT
+                if(move == MOVE_RIGHT)
+                {
+                    puts("MOVE_RIGHT all the other cells\n");
+                    int last_cell_i = last_i;
+                    int move_to_row = last_cell_i / 4;
+                    int move_to_colum = last_cell_i % 4;
+                    int move_row = i / 4;
+                    int move_colum = i % 4;
+                    for(int counter=move_colum - 1; counter>=0; counter--)
+                    {
+                        //the location of moving to 
+                        move_to_colum--;
+                        last_cell_i = (move_to_row * 4) + move_to_colum;
+                        //value of being moved cell
+                        int val = board->cells[move_row * 4 + counter];
+
+                        //check if there are any cells, true then move the cell to the location
+                        if(board->occupied_cells & (1 << (move_row * 4 + counter)))
+                        {
+                            //update the bitmap
+                            bitmap ^=  (1 << last_cell_i);
+                            //update the occupied_cells
+                            board->occupied_cells ^= (1 << (move_row * 4 + counter)) | (1 << last_cell_i);
+                            //update the value of the both cells
+                            board->cells[move_row * 4 + counter] = 0;
+                            board->cells[last_cell_i] = val;
+                        }//end of if
+                    }//end of for
+                }//end of if(MOVE_RIGHT)
             }//end of if(last_i>=0)
         }//end of if(!collision_bitmap)
         else //collide happens
