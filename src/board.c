@@ -196,6 +196,111 @@ void board_move(board_t *board, int move)
             }
         }
     }   
+
+    if(move == MOVE_UP)
+    {
+        for(int colum = 0; colum < 4;colum++)
+        {
+            for(int row = 0;row < 4;row++)
+            {
+                //if the location to move into is 0
+                if(!(board->occupied_cells & (1 << (row * 4 + colum))))
+                {
+                    printf("%d\n",board->cells[row * 4 + colum]);
+                    int other_row = row + 1;
+                    while(other_row < 4)
+                    {
+                        if(board->occupied_cells & (1 << (other_row * 4 + colum)))
+                        {
+                            //if the being moved cell has a number that is not 0
+                            printf("%d\n",row * 4 + colum);//move into
+                            printf("%d\n",other_row * 4 + colum);//be moved from
+                            int move_val = board->cells[other_row * 4 + colum];
+                            printf("%d\n",board->cells[row * 4 + colum]);
+                            printf("%d\n",move_val);
+                            puts("++++++++++++++++++++");
+                            board->occupied_cells^=(1 << (row * 4 + colum)) | (1 << (other_row * 4 + colum));
+                            board->cells[other_row * 4 + colum] = 0;
+                            board->cells[row * 4 +colum] = move_val;
+                            break;
+                        }
+                        else other_row++;
+                    }
+                }
+                else continue;
+            }
+        }
+    }   
+
+    if(move == MOVE_LEFT)
+    {
+        for(int row = 0; row < 4;row++)
+        {
+            for(int colum = 0;colum < 4;colum++)
+            {
+                //if the location to move into is 0
+                if(!(board->occupied_cells & (1 << (row * 4 + colum))))
+                {
+                    printf("%d\n",board->cells[row * 4 + colum]);
+                    int other_colum = colum + 1;
+                    while(other_colum < 4)
+                    {
+                        if(board->occupied_cells & (1 << (row * 4 + other_colum)))
+                        {
+                            //if the being moved cell has a number that is not 0
+                            printf("%d\n",row * 4 + colum);//move into
+                            printf("%d\n",row * 4 + other_colum);//be moved from
+                            int move_val = board->cells[row * 4 + other_colum];
+                            printf("%d\n",board->cells[row * 4 + colum]);
+                            printf("%d\n",move_val);
+                            puts("++++++++++++++++++++");
+                            board->occupied_cells^=(1 << (row * 4 + colum)) | (1 << (row * 4 + other_colum));
+                            board->cells[row * 4 + other_colum] = 0;
+                            board->cells[row * 4 +colum] = move_val;
+                            break;
+                        }
+                        else other_colum++;
+                    }
+                }
+                else continue;
+            }
+        }
+    }   
+
+    if(move == MOVE_RIGHT)
+    {
+        for(int row = 0; row < 4;row++)
+        {
+            for(int colum = 3;colum >= 0;colum--)
+            {
+                //if the location to move into is 0
+                if(!(board->occupied_cells & (1 << (row * 4 + colum))))
+                {
+                    printf("%d\n",board->cells[row * 4 + colum]);
+                    int other_colum = colum - 1;
+                    while(other_colum >= 0)
+                    {
+                        if(board->occupied_cells & (1 << (row * 4 + other_colum)))
+                        {
+                            //if the being moved cell has a number that is not 0
+                            printf("%d\n",row * 4 + colum);//move into
+                            printf("%d\n",row * 4 + other_colum);//be moved from
+                            int move_val = board->cells[row * 4 + other_colum];
+                            printf("%d\n",board->cells[row * 4 + colum]);
+                            printf("%d\n",move_val);
+                            puts("++++++++++++++++++++");
+                            board->occupied_cells^=(1 << (row * 4 + colum)) | (1 << (row * 4 + other_colum));
+                            board->cells[row * 4 + other_colum] = 0;
+                            board->cells[row * 4 +colum] = move_val;
+                            break;
+                        }
+                        else other_colum--;
+                    }
+                }
+                else continue;
+            }
+        }
+    }   
     fill_random_cell(board);
 }
 
