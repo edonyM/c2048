@@ -58,22 +58,22 @@ int main(int argc, char **argv)
                 if (key == 'k') 
                 {
                     board_move(&board, MOVE_UP);
-                    board_print_occupied(board);
+                    //board_print_occupied(board);
                 }
                 else if (key == 'l') 
                 {
                     board_move(&board, MOVE_RIGHT);
-                    board_print_occupied(board);
+                    //board_print_occupied(board);
                 }
                 else if (key == 'j') 
                 {
                     board_move(&board, MOVE_DOWN);
-                    board_print_occupied(board);
+                    //board_print_occupied(board);
                 }
                 else if (key == 'h') 
                 {
                     board_move(&board, MOVE_LEFT);
-                    board_print_occupied(board);
+                    //board_print_occupied(board);
                 }
                 else
                 {

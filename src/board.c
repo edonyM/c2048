@@ -122,105 +122,11 @@ void board_move(board_t *board, int move)
             int last_i = precalc_directions_last[i][move];
             if (last_i >= 0) 
             {
-                puts("no collision\n");
+                //puts("not collision");
                 //set the cell bit into 0 and the to move bit into 1
                 board->occupied_cells ^= (1 << i) | (1 << last_i);
                 board->cells[i] = 0;
                 board->cells[last_i] = val;
-
-                //check if there are other cells to move along the direction(4 directions)
-                /*if(move == MOVE_UP)
-                {
-                    puts("MOVE_UP all the other cells\n");
-                    int last_cell_i = last_i;
-                    int move_to_row = last_cell_i / 4;
-                    int move_to_colum = last_cell_i % 4;
-                    int move_row = i / 4;
-                    int move_colum = i % 4;
-                    for(int counter=move_row + 1; counter < 4; counter++)
-                    {
-                        //the location of moving to 
-                        move_to_row++;
-                        last_cell_i = (move_to_row * 4) + move_to_colum;
-                        //value of to moved cell
-                        int val = board->cells[counter * 4 + move_colum];
-
-                        //check if there is a cell, true then move the cell to the location
-                        if(board->occupied_cells & (1 << (counter * 4 + move_colum)))
-                        {
-                            //update the bitmap
-                            bitmap ^= (1 << last_cell_i);
-                            //update the occupied_cells
-                            board->occupied_cells ^= (1 << (counter * 4 + move_colum)) | (1 << last_cell_i);
-                            //update the value of the both cells
-                            board->cells[counter * 4 + move_colum] = 0;
-                            board->cells[last_cell_i] = val;
-                        }
-                    }//end of for
-                }//end of MOVE_UP
-                */
-
-                //direction of MOVE_DOWN
-                if(move == MOVE_DOWN)
-                {
-                    puts("MOVE_DOWN all the other cells\n");
-                    int last_cell_i = last_i;
-                    int move_to_row = last_cell_i / 4;
-                    int move_to_colum = last_cell_i % 4;
-                    int move_row = i / 4;
-                    int move_colum = i % 4;
-                    for(int counter=move_row - 1; counter>=0; counter--)
-                    {
-                        //the location of moving to 
-                        move_to_row--;
-                        last_cell_i = (move_to_row * 4) + move_to_colum;
-                        //value of being moved cell
-                        int val = board->cells[counter * 4 + move_colum];
-
-                        //check if there are any cells, true then move the cell to the location
-                        if(board->occupied_cells & (1 << (counter * 4 + move_colum)))
-                        {
-                            //update the bitmap
-                            bitmap ^=  (1 << last_cell_i);
-                            //update the occupied_cells
-                            board->occupied_cells ^= (1 << (counter * 4 + move_colum)) | (1 << last_cell_i);
-                            //update the value of the both cells
-                            board->cells[counter * 4 + move_colum] = 0;
-                            board->cells[last_cell_i] = val;
-                        }
-                    }
-                }//end of MOVE_DOWN
-
-                //direction of MOVE_RIGHT
-                if(move == MOVE_RIGHT)
-                 {
-                    puts("MOVE_RIGHT all the other cells\n");
-                    int last_cell_i = last_i;
-                    int move_to_row = last_cell_i / 4;
-                    int move_to_colum = last_cell_i % 4;
-                    int move_row = i / 4;
-                    int move_colum = i % 4;
-                    for(int counter=move_colum - 1; counter>=0; counter--)
-                    {
-                        //the location of moving to 
-                        move_to_colum--;
-                        last_cell_i = (move_to_row * 4) + move_to_colum;
-                        //value of being moved cell
-                        int val = board->cells[move_row * 4 + counter];
-
-                        //check if there are any cells, true then move the cell to the location
-                        if(board->occupied_cells & (1 << (move_row * 4 + counter)))
-                        {
-                            //update the bitmap
-                            bitmap ^=  (1 << last_cell_i);
-                            //update the occupied_cells
-                            board->occupied_cells ^= (1 << (move_row * 4 + counter)) | (1 << last_cell_i);
-                            //update the value of the both cells
-                            board->cells[move_row * 4 + counter] = 0;
-                            board->cells[last_cell_i] = val;
-                        }//end of if
-                    }//end of for
-                }//end of if(MOVE_RIGHT)
             }//end of if(last_i>=0)
         }//end of if(!collision_bitmap)
         else //collide happens
@@ -231,55 +137,18 @@ void board_move(board_t *board, int move)
 
             if (other_val == val) 
             {
-                puts("collision and can merge\n");
                 /* score! */
                 //clear the moved bit
                 board->occupied_cells ^= 1 << i;
-
-                /*--Step 1 handle the collision and plus them--*/
                 board->cells[i] = 0;
                 board->cells[other_i] = val * 2;
                 board->score += get_score(val);
                 /* remove the number from `bitmap` as it's been merged, and so it shouldn't move */
                 //just change the collide bit
                 bitmap &= ~(1 << other_i);
-                
-                /*--Step 2 move along the direction again--*/
-                //after handle the collision, the collision cell should move into the first
-                //unoccupied cell along the move direction
-                if(move == MOVE_UP)
-                {
-                    //move all cells after the collision cell
-                    int move_row = other_i / 4;
-                    int move_colum = other_i % 4;
-                    printf("%d, %d\n",val,other_i);
-                    //move the cell along the direction
-                    for(int counter = move_row - 1; counter >= 0; counter--)
-                    {
-                        if((board->occupied_cells & (1 << (counter * 4 + move_colum))) == 0)
-                        {
-                            puts("update the cell");
-                            //update the occupied_cells of move to and move from
-                            board->occupied_cells ^= 1 << ((counter + 1) * 4 + move_colum);
-                            board->occupied_cells ^= 1 << (counter * 4 + move_colum);
-                            //update the cells of move to and move from
-                            board->cells[counter * 4 + move_colum] = 2 * val;
-                            board->cells[(counter + 1) * 4 + move_colum] = 0;
-                            //update the bitmap of move to and move from
-                            bitmap &= ~(1 << ((counter + 1) * 4 + move_colum));
-                            bitmap ^= (1 << (counter * 4 + move_colum));
-                        }
-                        else 
-                        {
-                            printf("break");
-                            break;
-                        }
-                    }
-                }
-            }
+            }//end of collision and can merge
             else 
             {
-                puts("collision and can not merge\n");
                 /* two different numbers; move to its neighbor square if we're not there already */
                 // `(move + 2) % 4` flips the direction.
                 int first_i = precalc_directions_first[other_i][(move + 2) % 4]; 
@@ -289,10 +158,44 @@ void board_move(board_t *board, int move)
                     board->cells[i] = 0;
                     board->cells[first_i] = val;
                 }
-            }
+            }//end of collision can not merge
         }//end of collsion handles
     }//end of for bitmap loops
 
+    if(move == MOVE_DOWN)
+    {
+        for(int colum = 0; colum < 4;colum++)
+        {
+            for(int row = 3;row >= 0;row--)
+            {
+                //if the location to move into is 0
+                if(!(board->occupied_cells & (1 << (row * 4 + colum))))
+                {
+                    printf("%d\n",board->cells[row * 4 + colum]);
+                    int other_row = row - 1;
+                    while(other_row >= 0)
+                    {
+                        if(board->occupied_cells & (1 << (other_row * 4 + colum)))
+                        {
+                            //if the being moved cell has a number that is not 0
+                            printf("%d\n",row * 4 + colum);//move into
+                            printf("%d\n",other_row * 4 + colum);//be moved from
+                            int move_val = board->cells[other_row * 4 + colum];
+                            printf("%d\n",board->cells[row * 4 + colum]);
+                            printf("%d\n",move_val);
+                            puts("++++++++++++++++++++");
+                            board->occupied_cells^=(1 << (row * 4 + colum)) | (1 << (other_row * 4 + colum));
+                            board->cells[other_row * 4 + colum] = 0;
+                            board->cells[row * 4 +colum] = move_val;
+                            break;
+                        }
+                        else other_row--;
+                    }
+                }
+                else continue;
+            }
+        }
+    }   
     fill_random_cell(board);
 }
 
