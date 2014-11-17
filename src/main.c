@@ -8,6 +8,7 @@
 #include "interface.h"
 #include "precalc.h"
 #include "bitmanip.h"
+//#include <conio.h>//not a standard head file in C
 
 int main(int argc, char **argv) 
 {
@@ -19,27 +20,6 @@ int main(int argc, char **argv)
     //printf("%d %d %d\n", LSB(0x11), MSB(0x11), PopCnt(0xFFFF));
 
     precalc_init();
-    //to understand the function precalc_init(),add some print out
-    //start print
-//    char *s1=(char*)malloc(20*sizeof(char));
-//    for(int i=1;i<5;i++){
-//        for(int j=1;j<5;j++)
-//        {
-//            int tmp=precalc_directions[i][j];
-//            int num=16;
-//            while(num>0)
-//            {
-//                *(s1+num-1)=tmp%2+'0';
-//                tmp=tmp/2;
-//                num--;
-//            }
-//            *(s1+16)='\0';
-//            printf("%d\n",precalc_directions[i][j]);
-//            printf("%s\n",s1);
-//        }
-//    }
-//   printf("\n");
-    //end print
 
     if (argc == 2) 
     {
@@ -52,33 +32,45 @@ int main(int argc, char **argv)
                 board_print(board);
 
                 printf("[hjkl] ");
-                char key = getchar();
-                getchar(); // eat newline
+                //char key = getchar();
+                //getchar(); // eat newline
+                char key;
+                int flag = 0;
+                scanf("%c",&key);
+                while(getchar() != '\n')
+                {//eat the wrong key strock until the new line
+                    flag++;
+                    continue;
+                }
+                //printf("%d",flag);
 
-                if (key == 'k') 
+                if (key == 'k' && flag == 0) 
                 {
                     board_move(&board, MOVE_UP);
                     //board_print_occupied(board);
                 }
-                else if (key == 'l') 
+                else if (key == 'l' && flag == 0) 
                 {
                     board_move(&board, MOVE_RIGHT);
                     //board_print_occupied(board);
                 }
-                else if (key == 'j') 
+                else if (key == 'j' && flag == 0) 
                 {
                     board_move(&board, MOVE_DOWN);
                     //board_print_occupied(board);
                 }
-                else if (key == 'h') 
+                else if (key == 'h' && flag == 0) 
                 {
                     board_move(&board, MOVE_LEFT);
                     //board_print_occupied(board);
                 }
                 else
                 {
-                    puts("wrong key strock!");
-                    return 1;
+                    puts("+++++++++++++++++++++");
+                    puts("+ Wrong Key Strock! +");
+                    puts("+     Try Again      ");
+                    puts("+++++++++++++++++++++");
+                    continue;
                 }
             }
         }
