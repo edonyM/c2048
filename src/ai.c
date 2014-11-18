@@ -8,15 +8,18 @@
 
 long long int ai_nodes_searched = 0;
 
-static inline int eval_board(board_t *board) {
+static inline int eval_board(board_t *board) 
+{
     return board->score - PopCnt(board->occupied_cells) + SIZE;
 }
 
 /* depth first search with no pruning */
-int ai_search(board_t *board, int depth, int ply, int *best_move) {
+int ai_search(board_t *board, int depth, int ply, int *best_move) 
+{
     ai_nodes_searched += 1;
 
-    if (depth == 0) {
+    if (depth == 0) 
+    {
         return eval_board(board);
     }
 

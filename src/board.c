@@ -13,20 +13,20 @@ static int get_score(int);
 
 static int score_map[] = 
 {
-        2, //     2
-        5, //     4
-       10, //     8
-       25, //    16
-       50, //    32
-      125, //    64
-      250, //   128
-      500, //   256
-     1000, //   512
-     2000, //  1024
-     4000, //  2048
-     8000, //  4096
-    16000, //  8192
-    32500, // 16384
+        4, //     2
+        8, //     4
+       16, //     8
+       32, //    16
+       64, //    32
+      128, //    64
+      256, //   128
+      512, //   256
+     1024, //   512
+     2048, //  1024
+     4096, //  2048
+     8192, //  4096
+    16384, //  8192
+    32768, // 16384
 };
 
 static int get_score(int number) 
@@ -70,7 +70,7 @@ static void fill_random_cell(board_t *board)
 
         board->cells[rand_i] = rand_val;
         board->occupied_cells |= (1 << rand_i);
-        board->score += rand_val;
+        //board->score += rand_val;
     }
 }
 
