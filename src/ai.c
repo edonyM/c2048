@@ -33,19 +33,22 @@ int ai_search(board_t *board, int depth, int ply, int *best_move)
 
     int score_before = board->score;
 
-    for (int move = 0; move < 4; ++move) {
+    for (int move = 0; move < 4; ++move) 
+    {
         board_move(board, move);
 
         /* we check to see if we did nothing at all. no point in searching further then, since it'll be
          * the same exact position. */
-        if (score_before == board->score) {
+        if (score_before == board->score) 
+        {
             memcpy(board, &board_copy, sizeof(board_t));
             continue;
         }
 
         int score = ai_search(board, depth - 1, ply + 1, NULL);
 
-        if (score > best_ply_score) {
+        if (score > best_ply_score) 
+        {
             best_ply_score = score;
             best_ply_move = move;
         }
@@ -53,14 +56,16 @@ int ai_search(board_t *board, int depth, int ply, int *best_move)
         memcpy(board, &board_copy, sizeof(board_t));
     }
 
-    if (ply == 0) {
+    if (ply == 0) 
+    {
         *best_move = best_ply_move;
     }
 
     return best_ply_score;
 }
 
-void ai_find_best_move(board_t *board, int *best_move) {
+void ai_find_best_move(board_t *board, int *best_move) 
+{
     int move_to_popularity[4] = {0};
 
     /* since this game is affected by rand(), doing a naive depth first search
@@ -88,7 +93,8 @@ void ai_find_best_move(board_t *board, int *best_move) {
     }
 }
 
-void ai_loop() {
+void ai_loop() 
+{
     board_t board = board_init();
 
     int max_score = 0;
@@ -98,19 +104,23 @@ void ai_loop() {
     double start_time = util_get_timestamp();
 
     printf("avg\tmax\tcur\tsecs\tnps\n");
-    while (1) {
+    while (1) 
+    {
         int move = -1;
         ai_find_best_move(&board, &move);
 
-        if (move == -1) {
+        if (move == -1) 
+        {
             break;
         }
 
         int score_before = board.score;
         board_move(&board, move);
 
-        if (score_before == board.score) {
-            if (board.score > max_score) {
+        if (score_before == board.score) 
+        {
+            if (board.score > max_score) 
+            {
                 max_score = board.score;
             }
             score_sum += board.score;
