@@ -14,7 +14,7 @@ static inline int eval_board(board_t *board)
 }
 
 /* depth first search with no pruning */
-int ai_search(board_t *board, int depth, int ply, int *best_move) 
+int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*best_move for ?
 {
     ai_nodes_searched += 1;
 
