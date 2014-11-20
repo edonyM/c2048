@@ -10,7 +10,7 @@ long long int ai_nodes_searched = 0;
 
 static inline int eval_board(board_t *board) 
 {
-    return board->score - PopCnt(board->occupied_cells) + SIZE;
+    return board->score - PopCnt(board->occupied_cells) + SIZE;//?
 }
 
 /* depth first search with no pruning */
@@ -75,7 +75,8 @@ void ai_find_best_move(board_t *board, int *best_move)
      *
      * since we search upwards first in `ai_search()`, this is usually the move that's
      * returned in open positions. */
-    for (int try = 0; try < AI_NUM_TRIES; ++try) {
+    for (int try = 0; try < AI_NUM_TRIES; ++try) 
+    {
         int move = -1;
         ai_search(board, AI_DEPTH, 0, &move);
 
@@ -85,8 +86,10 @@ void ai_find_best_move(board_t *board, int *best_move)
     }
 
     int most_popular = 0;
-    for (int move = 0; move < 4; ++move) {
-        if (move_to_popularity[move] > most_popular) {
+    for (int move = 0; move < 4; ++move) 
+    {
+        if (move_to_popularity[move] > most_popular) 
+        {
             most_popular = move_to_popularity[move];
             *best_move = move;
         }
@@ -130,7 +133,8 @@ void ai_loop()
             double seconds = spent_time / 1000000.0;
             double mill_nodes = (double)ai_nodes_searched / 1000000.0;
 
-            printf("%llu\t%d\t%d\t%.2f\t%.2f\n", score_sum / tries, max_score, board.score, seconds, mill_nodes / seconds);
+            printf("%llu\t%d\t%d\t%.2f\t%.2f\n", score_sum / tries, max_score,
+                    board.score, seconds, mill_nodes / seconds);
             board = board_init();
         }
     }
