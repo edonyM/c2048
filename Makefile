@@ -104,11 +104,12 @@ make:
 	@echo "You want the executable file run itself?"
 	@echo "'Y' for yes,'N' for no"
 	@read -s -n1 key;\
+		read -s -n5 interface;\
 		Y="Y";\
 		y="y";\
 		if [ $$key == $$Y ] || [ $$key == $$y ]; then\
 		cd $(DIR_BIN);\
-		$(DIR_BIN)$(TARGET) --human;\
+		$(DIR_BIN)$(TARGET) --$$interface;\
 		exit 0;\
 		else\
 		echo "Not Execute the File!";\

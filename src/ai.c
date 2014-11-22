@@ -42,12 +42,19 @@ int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*b
         if (score_before == board->score) 
         {
             memcpy(board, &board_copy, sizeof(board_t));
+            puts("==");
+            board_print(*board);
+            puts("+=");
             continue;
         }
 
+        puts("=ai");
+        board_print(*board);
         int score = ai_search(board, depth - 1, ply + 1, NULL);
+        printf("%d\n",score);
+        puts("+ai");
 
-        if (score > best_ply_score) 
+        if (score > best_ply_score)//if the score is higher than other moves,then that is the best move
         {
             best_ply_score = score;
             best_ply_move = move;
@@ -61,7 +68,7 @@ int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*b
         *best_move = best_ply_move;
     }
 
-    return best_ply_score;
+    return best_ply_score;//return the best move score
 }
 
 void ai_find_best_move(board_t *board, int *best_move) 
@@ -100,42 +107,58 @@ void ai_loop()
 {
     board_t board = board_init();
 
-    int max_score = 0;
-    long long unsigned int score_sum = 0;
+    //int max_score = 0;
+    //long long unsigned int score_sum = 0;
     int tries = 0;
+    
+    int max_cell = 0;
 
-    double start_time = util_get_timestamp();
+    //double start_time = util_get_timestamp();
 
-    printf("avg\tmax\tcur\tsecs\tnps\n");
-    while (1) 
+    //printf("avg\tmax\tcur\tsecs\tnps\n");
+    int i = 5;
+    while ( i > 0 ) 
     {
+        i--;
         int move = -1;
         ai_find_best_move(&board, &move);
+
+        tries++;
 
         if (move == -1) 
         {
             break;
         }
 
-        int score_before = board.score;
+        //int score_before = board.score;
         board_move(&board, move);
 
-        if (score_before == board.score) 
+        for(int i = 0;i < 16;i++)
         {
-            if (board.score > max_score) 
-            {
-                max_score = board.score;
-            }
-            score_sum += board.score;
-            tries += 1;
-
-            double spent_time = util_get_timestamp() - start_time;
-            double seconds = spent_time / 1000000.0;
-            double mill_nodes = (double)ai_nodes_searched / 1000000.0;
-
-            printf("%llu\t%d\t%d\t%.2f\t%.2f\n", score_sum / tries, max_score,
-                    board.score, seconds, mill_nodes / seconds);
-            board = board_init();
+            if(board.cells[i] > max_cell)
+                max_cell = board.cells[i];
         }
+        if(max_cell >= 1024)
+        {
+            board_print(board);
+        }
+
+        //if (score_before == board.score) 
+        //{
+            //if (board.score > max_score) 
+            //{
+                //max_score = board.score;
+            //}
+            //score_sum += board.score;
+            //tries += 1;
+
+            //double spent_time = util_get_timestamp() - start_time;
+            //double seconds = spent_time / 1000000.0;
+            //double mill_nodes = (double)ai_nodes_searched / 1000000.0;
+
+            //printf("%llu\t%d\t%d\t%.2f\t%.2f\n", score_sum / tries, max_score,
+                    //board.score, seconds, mill_nodes / seconds);
+            //board = board_init();
+        //}
     }
 }
