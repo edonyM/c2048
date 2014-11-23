@@ -20,8 +20,6 @@ int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*b
 
     if (depth == 0) 
     {
-        //board_print(*board);
-        //return eval_board(board);
         return board->score;
     }
 
@@ -35,12 +33,8 @@ int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*b
 
     int score_before = board->score;
 
-    //printf("start ai_search for four moves and depth is:%d\n",depth);
     for (int move = 0; move < 4; ++move) 
     {
-        //puts("before move");
-        //board_print(*board);
-        //puts("end print");
         board_move(board, move);
 
         /* we check to see if we did nothing at all. no point in searching further then, since it'll be
@@ -48,17 +42,10 @@ int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*b
         if (score_before == board->score) 
         {
             memcpy(board, &board_copy, sizeof(board_t));
-            //printf("the move:%d can not get score\n",move);
-            //board_print(*board);
-            //printf("the move:%d can not score ends\n",move);
             continue;
         }
 
-        //printf("the move:%d can get score\n",move);
-        //board_print(*board);
         int score = ai_search(board, depth - 1, ply + 1, NULL);
-        //printf("the score(eval_score) is %d\n",score);
-        //printf("the move:%d can not score ends\n",move);
 
         if (score > best_ply_score)//if the score is higher than other moves,then that is the best move
         {
@@ -68,8 +55,6 @@ int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*b
 
         memcpy(board, &board_copy, sizeof(board_t));
     }
-    //printf("end ai_search for four moves and depth is:%d\n",depth);
-    //printf("\n");
 
     if (ply == 0) 
     {

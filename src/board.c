@@ -290,7 +290,7 @@ void board_print(board_t board)
         }
         printf("\n");
     }
-    //printf("Score: %d\n", board.score);
+    printf("Score: %d\n", board.score);
     printf("\n");
 }
 void board_print_occupied(board_t board)
