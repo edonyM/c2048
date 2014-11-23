@@ -109,10 +109,8 @@ void ai_loop()
     //double start_time = util_get_timestamp();
 
     //printf("avg\tmax\tcur\tsecs\tnps\n");
-    int i = 5;
-    while ( i > 0 ) 
+    while (1) 
     {
-        i--;
         board_print(board);
         int move = -1;
         ai_find_best_move(&board, &move);
@@ -132,7 +130,7 @@ void ai_loop()
             if(board.cells[i] > max_cell)
                 max_cell = board.cells[i];
         }
-        if(max_cell >= 1024)
+        if(max_cell >= 512)
         {
             board_print(board);
         }
