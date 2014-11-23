@@ -16,6 +16,7 @@ static inline int eval_board(board_t *board)
 /* depth first search with no pruning */
 int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*best_move for ?
 {
+    printf("search:%d\n",depth);
     ai_nodes_searched += 1;
 
     if (depth == 0) 
@@ -67,6 +68,7 @@ int ai_search(board_t *board, int depth, int ply, int *best_move) //ply for ?;*b
     {
         *best_move = best_ply_move;
     }
+    puts("end of ai_search..................");
 
     return best_ply_score;//return the best move score
 }
