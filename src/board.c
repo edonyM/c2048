@@ -282,6 +282,7 @@ void board_move(board_t *board, int move)
 
 void board_print(board_t board) 
 {
+    printf("\033[2J");
     for (int y = 0; y < COLSIZE; ++y) 
     {
         for (int x = 0; x < COLSIZE; ++x) 
