@@ -86,6 +86,11 @@ help:
 	@echo "    $(DIR_OBJ) for object file"
 	@echo "#4.help:"
 	@echo "    help for using this makefile to debug a project which includes source files include files"
+	@echo "#5.make:"
+	@echo "    make is the command that integrate all the commands to finnally get a executable file."
+	@echo "    after compile work done, you'll get an interface with two command:"
+	@echo "    1)Y(or y) and N(or n) are on be half of executing the compiled file and no executing the file."
+	@echo "    2)'human','ai' and 'test' are three paterns for play this game!"
 	@echo "......------------End------------......"
 
 #make all the commands and get the executable file
