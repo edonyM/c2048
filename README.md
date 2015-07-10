@@ -18,7 +18,7 @@ Improvement:
 ------------
 
     First:
-    Base on https://github.com/helgefmi/c2048, I fix its movement[1] regulation and score regulation[2].
+    Fix its movement[1] regulation and score regulation[2].
     [1].After the collision conduction, all the cells should be moved along the direction. Add this rule into
         the void board_move() in board.c file.
     [2].The scoring regulation should not include the cell value, just score it when collision happens and  
